@@ -179,6 +179,58 @@ h1 { font-size: 34px; letter-spacing: -1.2px; }
 .history-row { font-size: 12px; }
 .history-row small { font-size: 11px; }
 .danger-button { padding: 12px; font-size: 13px; }
+
+/* Keep the dark palette readable and give board layers clear separation. */
+.dark .app-shell { background: #111814; color: #edf3ee; }
+.dark .topbar { background: #1b2520; border-color: #35433a; }
+.dark .nav-link { color: #bdc9c1; }
+.dark .nav-link.active { color: #c2e3ce; }
+.dark .nav-link.active::after { background: #83bd98; }
+.dark .icon-button { color: #c7d4cb; }
+.dark .icon-button:hover { background: #2b3830; }
+.dark .text-action, .dark .clear-button, .dark .job-link { color: #a9d7b7; }
+.dark .primary-button { background: #397253; color: #fff; }
+.dark .primary-button:hover { background: #438461; }
+.dark .stat-card, .dark .board-section, .dark .company-card, .dark .profile-card, .dark .profile-security,
+.dark .modal, .dark .detail-drawer { background: #202b24; border-color: #39483e; color: #edf3ee; }
+.dark .stat-value, .dark .board-toolbar h2, .dark .company-card h3,
+.dark .profile-details h2, .dark .profile-security h2 { color: #f0f5f1; }
+.dark .stat-label, .dark .page-heading p, .dark .heading-date, .dark .board-toolbar p,
+.dark .company-card p, .dark .profile-details p, .dark .profile-security p { color: #b4c1b8; }
+.dark .kanban-column { background: #18221c; border-color: #2d3a32; }
+.dark .column-count, .dark .count-pill { background: #2c3a31; color: #c0d0c5; }
+.dark .column-add, .dark .more-button { color: #b4c4b9; }
+.dark .column-add:hover, .dark .more-button:hover { background: #35463a; color: #e5f2e9; }
+.dark .job-card { background: #26332b; border-color: #3b4a40; }
+.dark .job-card:hover { border-color: #607b69; box-shadow: 0 8px 20px #080d0a66; }
+.dark .job-card-title, .dark .column-title h3, .dark .modal-heading h2, .dark .detail-drawer > h2 { color: #f0f5f1; }
+.dark .company-name, .dark .card-meta, .dark .note-count, .dark .empty-column { color: #b6c3ba; }
+.dark .card-meta, .dark .detail-grid, .dark .history-row { border-color: #3a483e; }
+.dark .search-box, .dark .filters select, .dark .form-field input, .dark .form-field select,
+.dark .note-form textarea { background: #17211b; color: #edf4ee; border-color: #45564a; }
+.dark .search-box input { color: #edf4ee; }
+.dark .search-box input::placeholder { color: #a7b6ab; opacity: 1; }
+.dark .search-box kbd { background: #2c3931; border-color: #46574a; color: #e0eae2; }
+.dark .filters select option, .dark .form-field select option { background: #202b24; color: #edf3ee; }
+.dark .follow-toggle, .dark .column-title, .dark .detail-grid strong { color: #d9e4dc; }
+.dark .stage-chip { background: #202c25; border-color: #3b4a40; color: #c2cec5; }
+.dark .stage-chip.selected { background: #2b4333; border-color: #5b8468; color: #d1ebd8; }
+.dark .stage-chip:hover { border-color: #65856e; }
+.dark .company-avatar, .dark .profile-avatar { background: #30463a; color: #d4eadb; }
+.dark .profile-status { background: #2b4333; color: #c5e8cd; }
+.dark .secondary-button { background: #26332b; border-color: #45564a; color: #d9e4dc; }
+.dark .secondary-button:hover { background: #314238; }
+.dark .note-item { background: #253129; }
+.dark .note-item p, .dark .drawer-company, .dark .detail-grid small, .dark .notes-list small,
+.dark .history-row, .dark .note-actions button { color: #c0ccc3; }
+.dark .section-heading > span { background: #2d3c32; color: #c7d6cb; }
+.dark .reminder-panel { background: #2c281d; border-color: #5b4c2e; }
+.dark .reminder-title strong, .dark .reminder-job strong { color: #f0dfb7; }
+.dark .reminder-title p, .dark .reminder-job span, .dark .subtle-action { color: #d0bd91; }
+.dark .reminder-row { border-color: #51452f; }
+.dark .reminder-icon { background: #4b4027; color: #f0d38f; }
+.dark .danger-button { background: #332523; border-color: #69403c; color: #ffb4ab; }
+.dark .danger-button:hover { background: #432b28; }
 @media (max-width: 1150px) {
   .main-content { padding: 38px 28px 72px; }
   .stats-grid { gap: 13px; }
