@@ -9,6 +9,9 @@ export default defineConfig({
   server: {
     port: Number(process.env.JOBLEE_FRONTEND_PORT ?? 5173),
     strictPort: true,
+    proxy: {
+      "/api": "http://127.0.0.1:8000",
+    },
   },
   resolve: {
     alias: {

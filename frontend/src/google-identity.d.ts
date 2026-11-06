@@ -7,6 +7,9 @@ interface ImportMeta {
 }
 
 interface Window {
+  __JOBLEE_CONFIG__?: {
+    googleClientId?: string
+  }
   google?: {
     accounts?: {
       id?: {

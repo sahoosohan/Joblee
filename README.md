@@ -44,10 +44,10 @@ Open the frontend URL printed by the launcher. The API documentation is at <http
    cp frontend/.env.example frontend/.env.local
    ```
 
-4. Set the same Google client ID in `GOOGLE_CLIENT_ID` in `.env` and `VITE_GOOGLE_CLIENT_ID` in `frontend/.env.local`.
+4. Set the Google client ID in `GOOGLE_CLIENT_ID` in `.env` and `VITE_GOOGLE_CLIENT_ID` in `frontend/.env.local`.
 5. Restart the launcher after changing environment files.
 
-The Google Identity Services popup flow uses authorized JavaScript origins; no redirect URI is needed for local development. If the launcher selects a port other than `5173`, add both `http://localhost:<port>` and `http://127.0.0.1:<port>` as authorized JavaScript origins in Google Cloud Console, then reload the page. Never put a Google client secret in frontend environment variables; this app only needs the web client ID.
+The Google Identity Services popup flow uses authorized JavaScript origins; no redirect URI is needed. If the launcher selects a port other than `5173`, add both `http://localhost:<port>` and `http://127.0.0.1:<port>` as authorized JavaScript origins in Google Cloud Console, then reload the page. Never put a Google client secret in frontend environment variables; this app only needs the web client ID.
 
 ## Environment variables
 
@@ -56,9 +56,24 @@ The Google Identity Services popup flow uses authorized JavaScript origins; no r
 | `.env` | `GOOGLE_CLIENT_ID` | Google web client ID verified by the API |
 | `.env` | `DATABASE_URL` | SQLAlchemy database URL; defaults to local SQLite |
 | `frontend/.env.local` | `VITE_GOOGLE_CLIENT_ID` | Client ID used by Google sign-in in the browser; must match the API value |
-| `frontend/.env.local` | `VITE_API_URL` | API origin; defaults to `http://127.0.0.1:8000` |
+| `frontend/.env.local` | `VITE_API_URL` | Optional API origin; local development proxies `/api` to `http://127.0.0.1:8000`, and production uses the same origin by default |
 
 Local environment files are ignored by Git. Keep credentials and local configuration out of commits.
+
+## Free deployment
+
+The included [render.yaml](./render.yaml) and [Dockerfile](./Dockerfile) deploy the frontend and API together as one free Render web service. Use Supabase Free for PostgreSQL so application data survives Render restarts and deploys.
+
+1. Create a Supabase project on the Free plan and save its database password.
+2. In Supabase, open **Connect**, select **Session pooler**, and copy its connection string. Use the session pooler on port `5432`; it supports IPv4 connections from Render. Replace the password placeholder and URL-encode any reserved characters in the password.
+3. Push this repository, including the deployment files, to GitHub.
+4. In Render, choose **New → Blueprint**, connect the GitHub repository, and deploy the Blueprint. Enter the Supabase connection string for `DATABASE_URL` and your OAuth web client ID for `GOOGLE_CLIENT_ID` when prompted.
+5. After Render gives the service its `onrender.com` URL, add that exact HTTPS origin (for example, `https://joblee.onrender.com`) to **Authorized JavaScript origins** for the OAuth client in Google Cloud Console. No redirect URI is needed.
+6. Open the Render URL and sign in with the Google account that should own this single-user tracker. The first account to sign in is linked to the database.
+
+The deployment serves the React app and `/api/v1` from the same origin. Its Google client ID is injected when the container starts, so it does not need to be baked into the frontend build. The Render service creates the database tables on startup; it does not copy existing data from `backend/jobs.db`.
+
+Free hosting has sleep and inactivity limits: Render spins down free web services after 15 minutes without traffic, and the next request can take about a minute to wake them. Render's free filesystem is temporary, so the hosted database must be PostgreSQL rather than SQLite. Supabase Free currently includes 500 MB of database storage and may pause projects after a week of low activity. See [Render's free service limits](https://render.com/docs/free), [Supabase Free plan](https://supabase.com/pricing), and [Supabase connection options](https://supabase.com/docs/guides/database/connecting-to-postgres).
 
 ## Sample data
 
@@ -91,7 +106,7 @@ Interactive API docs are available at <http://127.0.0.1:8000/docs> while the app
 
 - **Frontend:** React, TypeScript, Vite, Tailwind CSS, dnd-kit, TanStack Query, Sonner
 - **Backend:** FastAPI, Pydantic, SQLAlchemy
-- **Database:** SQLite by default; other SQLAlchemy-compatible databases can be configured with `DATABASE_URL`
+- **Database:** SQLite locally; PostgreSQL for deployment
 - **Authentication:** Google Identity Services with Google ID token verification by the API
 
 ## Project structure

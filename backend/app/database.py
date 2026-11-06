@@ -9,7 +9,12 @@ connect_args = {}
 if DATABASE_URL.startswith("sqlite"):
     connect_args["check_same_thread"] = False
 
-engine = create_engine(DATABASE_URL, connect_args=connect_args, echo=False)
+engine_options = {"connect_args": connect_args, "echo": False}
+if DATABASE_URL.startswith("postgresql+"):
+    # Discard dead connections after idle periods and respect the free database limit.
+    engine_options.update(pool_pre_ping=True, pool_recycle=300, pool_size=1, max_overflow=0)
+
+engine = create_engine(DATABASE_URL, **engine_options)
 
 # Enable foreign keys for every SQLite connection
 @event.listens_for(engine, "connect")

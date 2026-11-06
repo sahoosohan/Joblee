@@ -14,7 +14,7 @@ const today = todayDate.toISOString().slice(0, 10)
 const todayLabel = todayDate.toLocaleDateString("en", { weekday: "long", month: "long", day: "numeric" })
 const prettyDate = (value: string) => new Date(`${value.slice(0, 10)}T12:00:00`).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" })
 const initials = (name: string) => name.split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase()
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID ?? ""
+const GOOGLE_CLIENT_ID = window.__JOBLEE_CONFIG__?.googleClientId || import.meta.env.VITE_GOOGLE_CLIENT_ID || ""
 const GOOGLE_SIGN_IN_CONFIGURED = Boolean(GOOGLE_CLIENT_ID && !GOOGLE_CLIENT_ID.toLowerCase().includes("your-client-id"))
 
 function loadGoogleIdentity() {

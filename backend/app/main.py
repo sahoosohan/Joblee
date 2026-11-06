@@ -1,9 +1,11 @@
 """FastAPI routes for the Job Application Tracker."""
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Response, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -347,3 +349,10 @@ def get_stats(q: str | None = None, status: list[str] | None = Query(default=Non
     if statuses and any(item not in valid for item in statuses):
         raise HTTPException(status_code=422, detail="Invalid application status")
     return crud.get_stats(db, q, statuses, work_mode, source, needs_follow_up)
+
+
+# In the production container, serve the built React app from the same origin
+# as the API. During development, Vite serves the frontend and proxies /api.
+STATIC_DIR = Path(__file__).resolve().parents[1] / "static"
+if STATIC_DIR.is_dir():
+    app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="frontend")
